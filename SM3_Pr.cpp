@@ -74,8 +74,8 @@ void generateRandomUInt32Array(uint32_t* array, size_t size) {
 void StepFunction(uint32_t state[8], uint32_t w, uint32_t w_prime, uint8_t iR) {
     uint32_t ff, gg, ss1, ss2, tt1, tt2, newB, newF, newE;
 
-    ff = FF(iR, state[0], state[1], state[2]);      //多数函数
-    gg = GG(iR, state[4], state[5], state[6]);      //选择函数
+    ff = FF(iR, state[0], state[1], state[2]);      
+    gg = GG(iR, state[4], state[5], state[6]);      
 
     ss1 = rol(rol(state[0], 12) + state[4] + rol(T(iR), (iR % 32)), 7);
     ss2 = XOR(ss1, rol(state[0], 12));
@@ -100,8 +100,8 @@ void StepFunction(uint32_t state[8], uint32_t w, uint32_t w_prime, uint8_t iR) {
 void StepFunctionSP(uint32_t state[8], uint8_t iR) {
     uint32_t ff, gg, ss1, ss2, tt1, tt2, newB, newF, newE;
 
-    ff = FF(iR, state[0], state[1], state[2]);      //多数函数
-    gg = GG(iR, state[4], state[5], state[6]);      //选择函数
+    ff = FF(iR, state[0], state[1], state[2]);      
+    gg = GG(iR, state[4], state[5], state[6]);     
 
     ss1 = rol(rol(state[0], 12) + state[4] + rol(T(iR), (iR % 32)), 7);
     ss2 = XOR(ss1, rol(state[0], 12));
@@ -135,14 +135,14 @@ void InvStepFunction(uint32_t state[8], uint32_t w, uint32_t w_prime, uint8_t iR
     newD = state[0] - w_prime - ff - ss2;
     newH = InvP0(state[4]) - w - gg - ss1;
 
-    state[0] = state[1];            // A <- B
-    state[1] = ror(state[2], 9);            // B <- C >>> 9
-    state[2] = state[3];            // C <- D
-    state[3] = newD;                // D <- newD
-    state[4] = state[5];            // E <- F
-    state[5] = ror(state[6], 19);            // F <- G >>> 19
-    state[6] = state[7];            // G <- H
-    state[7] = newH;                // H <-newH
+    state[0] = state[1];            
+    state[1] = ror(state[2], 9);         
+    state[2] = state[3];            
+    state[3] = newD;                
+    state[4] = state[5];            
+    state[5] = ror(state[6], 19);           
+    state[6] = state[7];            
+    state[7] = newH;               
 }
 
 
@@ -251,7 +251,6 @@ public:
 };
 
 
-
 void FindIS(std::vector<std::vector<uint32_t>>& p20, std::vector<std::vector<uint32_t>>& p17, uint32_t w17, uint32_t w18, uint32_t w23, uint32_t w22) {
     uint32_t rands[8];
     generateRandomUInt32Array(rands, 8);
@@ -273,7 +272,6 @@ void FindIS(std::vector<std::vector<uint32_t>>& p20, std::vector<std::vector<uin
             ((i & 0b00011) << 15);
         W21 = ind;
 
-        
         W17_prime = XOR(W17, W21);
         p18[0] = rands[0] + W17_prime;   
         temp = p18[0] & mask_backward;
@@ -324,8 +322,6 @@ void FindIS(std::vector<std::vector<uint32_t>>& p20, std::vector<std::vector<uin
 }
 
 void PseudoPreimage_MITM() {
-
-
 
     uint32_t rand15[4];
     generateRandomUInt32Array(rand15, 4);
@@ -387,7 +383,6 @@ void PseudoPreimage_MITM() {
             W[35] = XOR(P1(W19),   XOR(P1(W[26]), XOR(P1(rol(W[32], 15)), XOR(rol(W[22], 7), W[29]))));
 
 
-
             for (int k = 20; k < 31; k++) {
                 W_prime[k] = XOR(W[k], W[k + 4]);
                 StepFunction(p_tmp, W[k], W_prime[k], k);
@@ -397,7 +392,7 @@ void PseudoPreimage_MITM() {
 
 
             auxiTable[i] = std::vector<uint32_t>(8, 0);
-            for (int k = 0; k < 8; k++) auxiTable[i][k] = p_tmp[k]; //p4
+            for (int k = 0; k < 8; k++) auxiTable[i][k] = p_tmp[k]; 
 
 
             uint32_t A1 = p_tmp[0];
@@ -450,7 +445,6 @@ void PseudoPreimage_MITM() {
                 InvStepFunction(p_tmp, W[j], W_prime[j], j);
             }
 
-
             uint32_t D4 = p_tmp[3];
             uint32_t A1_ = ror(D4, 9);
             uint32_t A1_hat = A1_ - W_prime[0];
@@ -491,10 +485,6 @@ void PseudoPreimage_MITM() {
     std::cout << "--------" << ctr_Pr_b << "-----------" << std::endl;
 
 }
-
-
-
-
 
 int main(int argc, char** argv) {
 
